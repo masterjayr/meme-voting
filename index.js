@@ -41,17 +41,30 @@ function renderMemes() {
     $('#memeBody').html(rendered);
 }
 
+async function callStatic(func, args){
+  const contract = await client.getContractInstance(contractSource, {contractAddress});
+  const calledGet = await contract.call(func, args, {callStatic: true}).catch(e=>console.error(e));
+  console.log('calledGet', calledGet);
+  const decodedGet = await calledGet.decode().catch(e=>console.error(e));
+  
+  return decodedGet;
+}
+
 window.addEventListener('load', async () => {
     $('#loader').show();
     client = await Ae.Aepp();
-    console.log('client', client);
-    const contract = await client.getContractInstance(contractSource, {contractAddress});
-    console.log('contract', contract);
-    const calledGet = await contract.call('getMemesLength', [], {callStatic: true}).catch(e=>console.error(e));
-    console.log('calledGet', calledGet);
+    memesLength = callStatic('getMemesLength', []);
 
-    const decodedGet = await calledGet.decode().catch(e=>console.error(e));
-    console.log('decoded get', decodedGet);
+    for(let i =1; i <=memesLength; i++){
+      const meme = await callStatic('getMeme', [i]);
+
+      memeArray.push({
+        creatorName: meme.name,
+        memeUrl: meme.url,
+        index: i, 
+        votes: meme.voteCount
+      })
+    }
     renderMemes();
     $('#loader').hide();
 })
