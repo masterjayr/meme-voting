@@ -1,40 +1,33 @@
 const contractSource = `
-payable contract MemeVote = 
-
-record meme = 
-  { creatorAddress: address,
-    url           : string,
-    name          : string,
-    voteCount     : int}
-    
-record state = 
-  { memes       : map(int, meme), 
-    memesLength : int}
-
-entrypoint init() = 
-  { memes = {},
-    memesLength = 0}
-
-entrypoint getMeme(index : int) : meme = 
-  switch(Map.lookup(index, state.memes))
-    None => abort("There was no meme with this index registered.")
-    Some(x) => x
-
-stateful entrypoint registerMeme( url': string, name' : string) =
-  let meme = {creatorAddress = Call.caller, url = url', name = name', voteCount = 0}
-  let index = getMemeLength() + 1
-  put(state {memes[index] = meme, memesLength = index })
-
-entrypoint getMemeLength() : int =
-  state.memesLength
-  
-payable stateful entrypoint voteMeme(index: int) = 
-  let meme = getMeme(index)
-  Chain.spend(meme.creatorAddress, Call.value)
-  let updatedVoteCount = meme.voteCount + Call.value
-  let updatedMemes = state.memes{[index].voteCount = updatedVoteCount}
-  put(state{ memes = updatedMemes })
-  `;
+  payable contract MemeVote =
+    record meme =
+      { creatorAddress : address,
+        url            : string,
+        name           : string,
+        voteCount      : int }
+    record state =
+      { memes      : map(int, meme),
+        memesLength : int }
+    entrypoint init() =
+      { memes = {},
+        memesLength = 0 }
+    entrypoint getMeme(index : int) : meme =
+      switch(Map.lookup(index, state.memes))
+        None    => abort("There was no meme with this index registered.")
+        Some(x) => x
+    stateful entrypoint registerMeme(url' : string, name' : string) =
+      let meme = { creatorAddress = Call.caller, url = url', name = name', voteCount = 0}
+      let index = getMemesLength() + 1
+      put(state{ memes[index] = meme, memesLength = index })
+    entrypoint getMemesLength() : int =
+      state.memesLength
+    payable stateful entrypoint voteMeme(index : int) =
+      let meme = getMeme(index)
+      Chain.spend(meme.creatorAddress, Call.value)
+      let updatedVoteCount = meme.voteCount + Call.value
+      let updatedMemes = state.memes{ [index].voteCount = updatedVoteCount }
+      put(state{ memes = updatedMemes })
+`;
 const contractAddress = 'ct_2fDT6jVbBAey4GYy1CGU4paNDWwCuCtVxi4C4anRhH3hxhdvvy';
 var memeArray = [];
 var memesLength = 0;
