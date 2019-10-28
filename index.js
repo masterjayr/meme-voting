@@ -28,7 +28,7 @@ const contractSource = `
       let updatedMemes = state.memes{ [index].voteCount = updatedVoteCount }
       put(state{ memes = updatedMemes })
 `;
-const contractAddress = 'ct_2sWgczbH2vVXWVxb2dQBoHvHfSsqhQiP3HFV7YdKFt5V8c36F7';
+const contractAddress = 'ct_2fBQgEgw9Gj22qiY8Yz1RKMNdgwovXXbozDYwgGcksaBiVdHaR';
 var memeArray = [];
 var memesLength = 0;
 var client = null;
@@ -47,7 +47,7 @@ window.addEventListener('load', async () => {
     console.log('client', client);
     const contract = await client.getContractInstance(contractSource, {contractAddress});
     console.log('contract', contract);
-    const calledGet = await contract.call('getMemeLength', [], {callStatic: true}).catch(e=>console.error(e));
+    const calledGet = await contract.call('getMemesLength', [], {callStatic: true}).catch(e=>console.error(e));
     console.log('calledGet', calledGet);
 
     const decodedGet = await calledGet.decode().catch(e=>console.error(e));
