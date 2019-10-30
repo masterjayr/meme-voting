@@ -42,10 +42,14 @@ function renderMemes() {
 }
 
 async function callStatic(func, args){
+  const decodedGet;
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   const calledGet = await contract.call(func, args, {callStatic: true}).catch(e=>console.error(e));
   console.log('calledGet', calledGet);
-  const decodedGet = await calledGet.decode().catch(e=>console.error(e));
+  calledGet.decode().then(value=>{
+    decodedGet = value;
+  }).catch(e=>console.error(e))
+  // const decodedGet = await calledGet.decode().catch(e=>console.error(e));
   console.log('decoded get', decodedGet);
   return decodedGet;
 }
