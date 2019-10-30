@@ -57,7 +57,7 @@ window.addEventListener('load', async () => {
     console.log('Memes Length', memesLength);
     for(let i =1; i <=memesLength; i++){
       const meme = await callStatic('getMeme', [i]);
-
+      console.log('meme at', [i], meme);
       memeArray.push({
         creatorName: meme.name,
         memeUrl: meme.url,
