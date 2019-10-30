@@ -42,7 +42,7 @@ function renderMemes() {
 }
 
 async function callStatic(func, args){
-  const decodedGet;
+  var decodedGet;
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   const calledGet = await contract.call(func, args, {callStatic: true}).catch(e=>console.error(e));
   console.log('calledGet', calledGet);
