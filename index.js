@@ -46,6 +46,7 @@ async function callStatic(func, args){
   const calledGet = await contract.call(func, args, {callStatic: true}).catch(e=>console.error(e));
   console.log('calledGet', calledGet);
   const decodedResult = calledGet.decodedResult;
+  console.log('decoded Result', decodedResult);
   return decodedResult;
   // const decodedGet = await calledGet.decode().catch(e=>console.error(e));
   // console.log('decoded get', decodedGet);
