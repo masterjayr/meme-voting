@@ -46,7 +46,7 @@ async function callStatic(func, args){
   const calledGet = await contract.call(func, args, {callStatic: true}).catch(e=>console.error(e));
   console.log('calledGet', calledGet);
   const decodedGet = await calledGet.decode().catch(e=>console.error(e));
-  
+  console.log('decoded get', decodedGet);
   return decodedGet;
 }
 
@@ -54,7 +54,7 @@ window.addEventListener('load', async () => {
     $('#loader').show();
     client = await Ae.Aepp();
     memesLength = callStatic('getMemesLength', []);
-
+    console.log('Memes Length', memesLength);
     for(let i =1; i <=memesLength; i++){
       const meme = await callStatic('getMeme', [i]);
 
