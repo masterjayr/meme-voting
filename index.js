@@ -42,14 +42,10 @@ function renderMemes() {
 }
 
 async function callStatic(func, args){
-  var decodedGet;
   const contract = await client.getContractInstance(contractSource, {contractAddress});
   const calledGet = await contract.call(func, args, {callStatic: true}).catch(e=>console.error(e));
   console.log('calledGet', calledGet);
-  calledGet.decode().then(value=>{
-    decodedGet = value;
-  }).catch(e=>console.error(e))
-  // const decodedGet = await calledGet.decode().catch(e=>console.error(e));
+  const decodedGet = await calledGet.decode().catch(e=>console.error(e));
   console.log('decoded get', decodedGet);
   return decodedGet;
 }
@@ -57,8 +53,9 @@ async function callStatic(func, args){
 window.addEventListener('load', async () => {
     $('#loader').show();
     client = await Ae.Aepp();
-    memesLength = callStatic('getMemesLength', []);
-    console.log('Memes Length', memesLength);
+    // memesLength = callStatic('getMemesLength', []);
+    memesLength = 2;
+    // console.log('Memes Length', memesLength);
     for(let i =1; i <=memesLength; i++){
       const meme = await callStatic('getMeme', [i]);
       console.log('meme at', [i], meme);
