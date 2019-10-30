@@ -58,7 +58,7 @@ window.addEventListener('load', async () => {
     client = await Ae.Aepp();
     memesLength = callStatic('getMemesLength', []);
     // memesLength = 2;
-    console.log('Memes Length', memesLength);
+    console.log('Memes Length', memesLength.PromiseValue);
     for(let i =1; i <=memesLength; i++){
       const meme = await callStatic('getMeme', [i]);
       console.log('meme at', [i], meme);
